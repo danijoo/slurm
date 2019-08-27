@@ -1,4 +1,7 @@
+jobs: 2000
+latency-wait: 60
 restart-times: 3
+jobname: "snakemake_{rule}_{wildcards}_{jobid}"
 jobscript: "slurm-jobscript.sh"
 cluster: "{{cookiecutter.submit_script}}"
 cluster-status: "slurm-status.py"
