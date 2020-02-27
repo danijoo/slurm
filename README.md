@@ -80,6 +80,15 @@ run the tests by issuing
 
 ## ChangeLog
 
+### 2019-09-03
+
+- add qos option
+
+### 2019-08-21
+
+- replace pytest_namespace with pytest_configure
+- make days optional (#18)
+
 ### 2018-10-18
 
 - add cookiecutter options to set sbatch output and error defaults

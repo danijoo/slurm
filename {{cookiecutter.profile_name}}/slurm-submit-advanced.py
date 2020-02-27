@@ -30,9 +30,11 @@ def _get_cluster_configuration(partition):
         ["sinfo -e -O \"partition,cpus,memory,time,size,maxcpuspernode\"",
          "-h -p {}".format(partition)])
     res = subprocess.run(cmd, check=True, shell=True, stdout=subprocess.PIPE)
-    m = re.search("(?P<partition>\S+)\s+(?P<cpus>\d+)\s+(?P<memory>\S+)\s+(?P<days>\d+)-(?P<hours>\d+):(?P<minutes>\d+):(?P<seconds>\d+)\s+(?P<size>\S+)\s+(?P<maxcpus>\S+)",
+    m = re.search("(?P<partition>\S+)\s+(?P<cpus>\d+)\s+(?P<memory>\S+)\s+((?P<days>\d+)-)?(?P<hours>\d+):(?P<minutes>\d+):(?P<seconds>\d+)\s+(?P<size>\S+)\s+(?P<maxcpus>\S+)",
                   res.stdout.decode())
     d = m.groupdict()
+    if not 'days' in d or not d['days']:
+        d['days'] = 0
     d["time"] = int(d['days']) * 24 * 60 + \
         int(d['hours']) * 60 + int(d['minutes']) + \
         math.ceil(int(d['seconds']) / 60)
@@ -143,6 +145,8 @@ slurm_parser.add_argument(
     "-p", "--partition", help="partition requested",
     default=_get_default_partition(), type=str)
 slurm_parser.add_argument(
+    "-q", "--qos", help="quality of service")
+slurm_parser.add_argument(
     "-Q", "--quiet", help="quiet mode (suppress informational messages)")
 slurm_parser.add_argument(
     "-t", "--time", help="time limit")
@@ -154,7 +158,7 @@ slurm_parser.add_argument(
     "--mem", help="minimum amount of real memory")
 
 opt_keys = ["array", "account", "begin", "cpus_per_task",
-            "depedency", "workdir", "error", "job_name", "mail_type",
+            "dependency", "workdir", "error", "job_name", "mail_type",
             "mail_user", "ntasks", "nodes", "output", "partition",
             "quiet", "time", "wrap", "constraint", "mem"]
 
