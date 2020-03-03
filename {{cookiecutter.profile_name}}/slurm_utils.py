@@ -15,7 +15,7 @@ ADJUST_TO_PARTIION = bool("{{cookiecutter.adjust_to_partition}}")
 RESOURCE_MAPPING = {
     "time": ("time", "runtime", "walltime"),
     "mem": ("mem", "mem_mb", "ram", "memory"),
-    "mem_per_cpu": ("mem_per_cpu", "mem_per_thread"),
+    "mem-per-cpu": ("mem_per_cpu", "mem_per_thread"),
 }
 
 
